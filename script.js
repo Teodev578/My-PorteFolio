@@ -1,16 +1,38 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const hamburger = document.querySelector('.hamburger-menu');
-    const navMenu = document.querySelector('.main-nav');
+    const burgerMenu = document.getElementById('burger-menu');
+    const navLinks = document.getElementById('nav-links');
 
-    hamburger.addEventListener('click', () => {
-        // Ajoute/retire la classe 'is-active' au bouton pour l'animation
-        hamburger.classList.toggle('is-active');
+    burgerMenu.addEventListener('click', () => {
+        navLinks.classList.toggle('nav-active');
+        burgerMenu.classList.toggle('toggle');
 
-        // Ajoute/retire la classe 'is-open' au menu pour le faire apparaître/disparaître
-        navMenu.classList.toggle('is-open');
-
-        // Met à jour l'attribut ARIA pour l'accessibilité
-        const isOpened = hamburger.getAttribute('aria-expanded') === 'true';
-        hamburger.setAttribute('aria-expanded', !isOpened);
+        // Animate links
+        navLinks.querySelectorAll('li').forEach((link, index) => {
+            if (link.style.animation) {
+                link.style.animation = '';
+            } else {
+                link.style.animation = `navLinkFade 0.5s ease forwards ${index / 7 + 0.3}s`;
+            }
+        });
     });
 });
+
+// Animation for nav links
+const navLinkFade = `
+@keyframes navLinkFade {
+    from {
+        opacity: 0;
+        transform: translateX(50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0px);
+    }
+}
+`;
+
+// Append the keyframes to the style sheet
+const styleSheet = document.createElement("style");
+styleSheet.type = "text/css";
+styleSheet.innerText = navLinkFade;
+document.head.appendChild(styleSheet);
